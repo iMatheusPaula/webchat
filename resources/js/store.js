@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default new Vuex.Store({
    state:{
@@ -9,11 +10,12 @@ export default new Vuex.Store({
        setUserState: (state, value) => state.user = value
    },
    actions:{
-       userStateAction: () => {
+       userStateAction: ({commit}) => {
            axios.get('api/user/me').then(response => {
                const userResponse = response.data.user
                commit('setUserState', userResponse);
            })
        }
-   }
+   },
+    plugins: [ createPersistedState() ]
 });

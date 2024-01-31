@@ -98,7 +98,6 @@ import Welcome from '@/Components/Welcome.vue';
                 this.scrollToBottom();
             },
             sendMessage: function (){
-                console.log(this.message);
                 axios.post('/api/messages/input', {
                     'content': this.message,
                     'to': this.userActive
@@ -117,9 +116,9 @@ import Welcome from '@/Components/Welcome.vue';
         },
 
         mounted() {
-          axios.get(`api/users`).then(response =>{
-              this.users = response.data.users
-          });
+            axios.get(`api/users`).then(response =>{
+                this.users = response.data.users
+            });
         }
     }
 </script>
