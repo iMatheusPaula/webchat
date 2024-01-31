@@ -19,6 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function (){
+
+    Route::get('/user/me', [\App\Http\Controllers\Api\UserController::class, 'me'])
+        ->name('users.me');
+
     Route::get('/users', [\App\Http\Controllers\Api\UserController::class, 'index'])
         ->name('users.index');
 

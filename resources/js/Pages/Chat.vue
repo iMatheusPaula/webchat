@@ -67,6 +67,8 @@ import Welcome from '@/Components/Welcome.vue';
     </AppLayout>
 </template>
 <script>
+    import store from "@/store.js";
+
     export default {
         data(){
             return {
@@ -77,7 +79,11 @@ import Welcome from '@/Components/Welcome.vue';
             }
 
         },
-
+        computed:{
+            user() {
+                return store.state.user
+            }
+        },
         methods:{
             scrollToBottom: function (){
                 if(this.messages.length){
@@ -98,7 +104,7 @@ import Welcome from '@/Components/Welcome.vue';
                     'to': this.userActive
                 }).then(response =>{
                     this.messages.push({
-                        'from': 21,
+                        'from': this.user.id,
                         'to': this.userActive,
                         'content': this.message,
                         'created_at': new Date().toISOString(),
