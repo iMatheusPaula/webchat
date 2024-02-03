@@ -119,7 +119,7 @@ import Welcome from '@/Components/Welcome.vue';
             axios.get(`api/users`).then(response =>{
                 this.users = response.data.users
             });
-
+            console.log("chegamos aqui");
             Echo.private( `user.${this.user.id}`).listen('.SendMessage', (content) =>{
                 console.log(content);
             });
