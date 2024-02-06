@@ -27,7 +27,7 @@ import Welcome from '@/Components/Welcome.vue';
 
                                 <p class="flex items-center">
                                     {{ user.name }}
-                                    <span class="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
+                                    <span v-if="user.notification" class="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
                                 </p>
                             </li>
                         </ul>
@@ -77,7 +77,6 @@ import Welcome from '@/Components/Welcome.vue';
                 userActive: '',
                 message: ''
             }
-
         },
         computed:{
             user() {
@@ -118,10 +117,34 @@ import Welcome from '@/Components/Welcome.vue';
         mounted() {
             axios.get(`api/users`).then(response =>{
                 this.users = response.data.users
+                console.log(this.users);
             });
             console.log("chegamos aqui");
-            Echo.private( `user.${this.user.id}`).listen('.SendMessage', (content) =>{
-                console.log(content);
+            Echo.private( `user.${this.user.id}`).listen('.SendMessage', async (content) =>{
+                if(this.userActive && this.userActive === content.message.from) {
+                    await this.messages.push(content.message)
+                    this.scrollToBottom()
+                }
+                else{
+                    const user = this.users.filter((user) =>{
+                        if (user.id === content.message.from){
+                            this.users.push({
+                                'from': this.user.id,
+                                'to': this.userActive,
+                                'content': this.message,
+                                'created_at': new Date().toISOString(),
+                                'updated_at': new Date().toISOString()
+                            })
+                        }
+                        else {
+                            return null;
+                        }
+                    });
+
+                    if(user){
+                        user.notification = true;
+                    }
+                }
             });
         }
     }
