@@ -111,6 +111,16 @@ import Welcome from '@/Components/Welcome.vue';
                     this.message = '';
                 });
                 this.scrollToBottom();
+            },
+            sendNotification: function (){
+                axios.post('/api/notification/input', {
+                    'from': this.user.id,
+                    'to': this.userActive,
+                    'status': true,
+                    'message': this.message.id
+                }).then(response =>{
+                    console.log('notificou');
+                });
             }
         },
 
@@ -126,24 +136,14 @@ import Welcome from '@/Components/Welcome.vue';
                     this.scrollToBottom()
                 }
                 else{
-                    const user = this.users.filter((user) =>{
-                        if (user.id === content.message.from){
-                            this.users.push({
-                                'from': this.user.id,
-                                'to': this.userActive,
-                                'content': this.message,
-                                'created_at': new Date().toISOString(),
-                                'updated_at': new Date().toISOString()
-                            })
-                        }
-                        else {
-                            return null;
-                        }
+                    axios.post('/api/notification/input', {
+                        'from': this.user.id,
+                        'to': this.userActive,
+                        'status': true,
+                        'message': this.message.id
+                    }).then(response =>{
+                        console.log('notificou');
                     });
-
-                    if(user){
-                        user.notification = true;
-                    }
                 }
             });
         }

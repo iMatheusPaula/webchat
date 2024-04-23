@@ -28,4 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/messages/input', [\App\Http\Controllers\Api\MessageController::class, 'store'])
         ->name('message.store');
 
+    Route::post('/notification/input', [\App\Http\Controllers\Api\NotificationController::class, 'store'])
+        ->name('notification.store');
+
 });
